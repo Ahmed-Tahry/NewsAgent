@@ -1,15 +1,15 @@
 from langgraph.graph import StateGraph, END
 from langchain_core.messages import HumanMessage, AIMessage
 from .graph_state import AgentState
-#from .tools.analysis_tool import AnalysisTool
-#from .tools.chat_tool import ChatTool
-#from .tools.news_fetcher_tool import NewsFetcherTool
+from .tools.analysis_tool import AnalysisTool
+from .tools.chat_tool import ChatTool
+from .tools.news_fetcher_tool import NewsFetcherTool
 from .tools.router_tool import RouterTool
 
 # --- 1. Initialize Tools ---
-#analysis_tool = AnalysisTool()
-#chat_tool = ChatTool()
-#news_fetcher_tool = NewsFetcherTool()
+analysis_tool = AnalysisTool()
+chat_tool = ChatTool()
+news_fetcher_tool = NewsFetcherTool()
 router_tool = RouterTool()
 
 # --- 2. Define Graph Nodes ---
@@ -30,31 +30,30 @@ def route_message(state: AgentState):
 
 def call_chat_tool(state: AgentState):
     """Node for handling casual conversation."""
-    print("--- MOCKED: In call_chat_tool ---")
-    response = "This is a mocked chat response."
+    last_message = state['messages'][-1].content
+    history = state['messages']
+    response = chat_tool.run(last_message, history)
     return {"messages": [AIMessage(content=response)]}
 
 def call_news_fetcher_tool(state: AgentState):
     """Node for fetching a news article."""
-    print("--- MOCKED: In call_news_fetcher_tool ---")
     topic = state.get('current_topic')
     if not topic or topic == "None":
         response = "You asked for news, but didn't specify a topic. Please try again, for example: 'fetch news about Apple'."
         return {"messages": [AIMessage(content=response)]}
         
-    article = f"This is a mocked article about {topic}."
+    article = news_fetcher_tool.run(topic)
     response = f"I've fetched an article about '{topic}'. You can now ask me to analyze it."
     return {"messages": [AIMessage(content=response)], "current_article": article}
 
 def call_analysis_tool(state: AgentState):
     """Node for running the full analysis pipeline."""
-    print("--- MOCKED: In call_analysis_tool ---")
     article = state.get('current_article')
     if not article:
         response = "There is no article to analyze. Please fetch one first by asking for 'news about [topic]'."
         return {"messages": [AIMessage(content=response)]}
     
-    analysis_result = "This is a mocked analysis result."
+    analysis_result = analysis_tool.run(article)
     return {"messages": [AIMessage(content=analysis_result)]}
 
 # --- 3. Define Conditional Edges ---
