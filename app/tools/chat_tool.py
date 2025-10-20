@@ -1,23 +1,22 @@
-import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM
-from config import ROUTER_MODEL_PATH
+from ctransformers import AutoModelForCausalLM
+from config import TINYLLAMA_MODEL_PATH
 
 class ChatTool:
     def __init__(self):
         """
-        Initializes the Casual Chat Tool with the Gemma-270m model.
+        Initializes the Casual Chat Tool with the TinyLlama model.
         """
         try:
-            self.tokenizer = AutoTokenizer.from_pretrained(ROUTER_MODEL_PATH)
-            self.model = AutoModelForCausalLM.from_pretrained(
-                ROUTER_MODEL_PATH,
-                torch_dtype=torch.bfloat16
+            self.llm = AutoModelForCausalLM.from_pretrained(
+                ".",
+                model_file=TINYLLAMA_MODEL_PATH,
+                model_type="llama",
+                gpu_layers=5,
             )
-            print("Chat model (Gemma-270m) loaded successfully.")
+            print("Chat model (TinyLlama) loaded successfully.")
         except Exception as e:
             print(f"Error loading chat model: {e}")
-            self.model = None
-            self.tokenizer = None
+            self.llm = None
 
     def run(self, user_input: str, history: list) -> str:
         """
@@ -30,7 +29,7 @@ class ChatTool:
         Returns:
             str: The model's response.
         """
-        if not self.model or not self.tokenizer:
+        if not self.llm:
             return "The chat model is not available."
 
         # Format the conversation history for the model
@@ -43,14 +42,6 @@ class ChatTool:
         
         prompt += f"user: {user_input}\nassistant:"
         
-        inputs = self.tokenizer(prompt, return_tensors="pt")
-
-        with torch.no_grad():
-            outputs = self.model.generate(**inputs, max_new_tokens=100, pad_token_id=self.tokenizer.eos_token_id)
+        response = self.llm(prompt, max_new_tokens=10, temperature=0.7)
         
-        response = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
-        
-        # Extract the last assistant message
-        last_response = response.split("assistant:")[-1].strip()
-        
-        return last_response
+        return response

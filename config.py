@@ -14,6 +14,9 @@ LLM_MODEL_PATH = "models/llama-3-reasoning-16bit"
 # Path to the SLM model for routing
 ROUTER_MODEL_PATH = "models/gemma-3-270m" # Using a pre-trained Gemma model from Hugging Face
 
+# Path to the TinyLlama model for chat and routing
+TINYLLAMA_MODEL_PATH = "models/tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf"
+
 # NewsAPI Key
 # Get your free API key from https://newsapi.org/
 NEWS_API_KEY = "pub_c86fbbaf78404fe6b54fdf0df62cee2d"

@@ -38,13 +38,14 @@ async def chat(chat_request: ChatRequest):
     # Invoke the LangGraph app
     final_state = app.invoke(state)
     
-    # Get the AI's response
+    # Get the AI's response and the type of response
     ai_response = final_state['messages'][-1].content
+    response_type = final_state.get("next_node", "chat")
     
     # Update the state for the next turn
     state = final_state
     
-    return {"reply": ai_response}
+    return {"reply": ai_response, "type": response_type}
 
 if __name__ == "__main__":
     import uvicorn

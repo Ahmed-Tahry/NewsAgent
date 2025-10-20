@@ -6,6 +6,7 @@ nltk
 sentence-transformers
 chromadb
 bitsandbytes
+ctransformers
 # Required for Gemma model
 accelerate
 
