@@ -16,7 +16,7 @@ ROUTER_MODEL_PATH = "models/gemma-3-270m" # Using a pre-trained Gemma model from
 
 # NewsAPI Key
 # Get your free API key from https://newsapi.org/
-NEWS_API_KEY = "YOUR_NEWS_API_KEY_HERE"
+NEWS_API_KEY = "pub_c86fbbaf78404fe6b54fdf0df62cee2d"
 
 # Path to the JSON file used for caching entity information
 ENTITY_CACHE_PATH = "data/entity_cache.json"

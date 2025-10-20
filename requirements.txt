@@ -12,6 +12,7 @@ accelerate
 # External APIs
 wikipedia-api
 newsapi-python
+requests
 
 # LangGraph Orchestration
 langgraph
