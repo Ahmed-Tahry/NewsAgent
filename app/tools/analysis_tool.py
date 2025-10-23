@@ -180,7 +180,7 @@ class AnalysisTool:
                 page = self.wiki_api.page(clean_entity)
                 
                 if page.exists():
-                    summary = page.summary.split('\\n')[0]
+                    summary = " ".join(sent_tokenize(page.summary)[:2])
                     enriched_data[entity] = { "summary": summary, "url": page.fullurl }
                     self.db_collection.add(ids=[entity], documents=[summary])
                 else:

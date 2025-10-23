@@ -23,6 +23,8 @@ class NewsFetcherTool:
                 title = first_article.get('title', 'No Title')
                 description = first_article.get('description', 'No Description')
                 content = first_article.get('content', 'No Content')
+                if content:
+                    content = "\n".join(content.split('\n')[:6])
                 return f"Title: {title}\n\nDescription: {description}\n\nContent: {content}"
             else:
                 # Check for error message in response
