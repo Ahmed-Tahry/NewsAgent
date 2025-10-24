@@ -77,6 +77,7 @@ class AnalysisTool:
                     device_map="auto",
                     
                 )
+                self.llm_model = torch.compile(self.llm_model, mode="reduce-overhead", fullgraph=True)
                 print("Analysis LLM loaded successfully in 4-bit.")
             except Exception as e:
                 print(f"Error loading Analysis LLM on GPU: {e}")
@@ -224,9 +225,9 @@ Output in plain text with sections like 'Concise Summary:', 'Impact Forecast:', 
         with torch.no_grad():
             outputs = self.llm_model.generate(
                 **inputs,
-                max_new_tokens=2048,
+                max_new_tokens=1024,
                 do_sample=True,
-                temperature=0.7,
+                temperature=0.5,
                 top_p=0.9,
                 pad_token_id=self.llm_tokenizer.eos_token_id,
                 eos_token_id=self.llm_tokenizer.eos_token_id
