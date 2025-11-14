@@ -9,6 +9,7 @@ bitsandbytes
 ctransformers
 # Required for Gemma model
 accelerate
+xformers
 
 # External APIs
 wikipedia-api

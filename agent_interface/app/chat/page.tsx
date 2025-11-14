@@ -61,7 +61,7 @@ export default function ChatPage() {
       }
 
       const data = await response.json();
-
+      console.log("AI Response Data:", data);
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
